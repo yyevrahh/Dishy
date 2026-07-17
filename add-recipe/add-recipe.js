@@ -125,39 +125,59 @@ function displayProcedures(procedures) {
 }
 
 $(".save").click(async function () {
-	const dishName = $("#dishName").val();
-	const flavor = $("#flavor").val();
-	const difficulty = $("#difficulty").val();
+    const dishName = $("#dishName").val();
+    const flavor = $("#flavor").val();
+    const difficulty = $("#difficulty").val();
+    const token = turnstile.getResponse();
 
-	if (dishName && flavor && ingredients.length > 0 && procedures.length > 0) {
-		try {
-			await addDoc(collection(db, "recipes"), {
-				userId: userId,
-				dishName: dishName,
-				flavor: flavor,
-				ingredients: ingredients,
-				procedures: procedures,
-				difficulty: difficulty,
-				createdAt: new Date(),
-			});
-			$(".text-input").val('');
-			$("input").text('');
-			$("#difficulty").val('easy');
-			ingredients = [];
+    if (!token) {
+        alert("Please complete the CAPTCHA.");
+        return;
+    }
+
+    if (dishName && flavor && ingredients.length > 0 && procedures.length > 0) {
+        try {
+            const verificationResponse = await fetch("/api/verify-turnstile", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: token }),
+            });
+
+            const verificationData = await verificationResponse.json();
+
+            if (!verificationData.success) {
+                alert("CAPTCHA verification failed. Please try again.");
+                return;
+            }
+
+            await addDoc(collection(db, "recipes"), {
+                userId: userId,
+                dishName: dishName,
+                flavor: flavor,
+                ingredients: ingredients,
+                procedures: procedures,
+                difficulty: difficulty,
+                createdAt: new Date(),
+            });
+            $(".text-input").val("");
+            $("input").text("");
+            $("#difficulty").val("easy");
+            ingredients = [];
             procedures = [];
             displayIngredients(ingredients);
             displayProcedures(procedures);
 
-			$("#popup").fadeIn();
-		} catch (e) {
-			console.error("Error adding document: ", e);
-			alert("Error saving recipe");
-		}
-	} else {
-		alert("Please fill in all fields!");
-	}
+            $("#popup").fadeIn();
+        } catch (e) {
+            console.error("Error adding document: ", e);
+            alert("Error saving recipe");
+        }
+    } else {
+        alert("Please fill in all fields!");
+    }
 });
 
 $("#closePopup").click(function () {
     $("#popup").fadeOut();
 });
+
