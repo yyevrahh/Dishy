@@ -1,34 +1,5 @@
-const data = [
-    {
-        title: "Generate recipes on the go.",
-        description: "Try Dishy! <br> Type in your ingredients and see what dishes you can make from scratch!",
-        bgImage: "url('res/preview_1.png')"
-    },
-    {
-        title: "Feeling adventurous?",
-        description: " Let us surprise your taste buds! Try something new and exciting in the kitchen today.",
-        bgImage: "url('res/preview_2.png')"
-    },
-    {
-        title: "Don’t know what to cook?",
-        description: "Let us decide for you! Take the stress out of mealtime with our smart recipe generator.",
-        bgImage: "url('res/preview_3.png')"
-    }
-];
+// This file is no longer needed as routing and UI rendering are handled by app.js for the single-page application.
+// All HTML templates are now directly embedded as string literals in app.js for dynamic rendering.
 
-let currentIndex = 0;
-const previewDiv = document.querySelector('.preview');
-const title = document.querySelector('.title');
-const description = document.querySelector('.description');
-
-function updatePreview() {
-  var currentData = data[currentIndex];
-  title.textContent = currentData.title;
-  description.innerHTML = currentData.description;
-  previewDiv.style.backgroundImage = currentData.bgImage;
-
-  currentIndex = (currentIndex + 1) % data.length;
-}
-
-setInterval(updatePreview, 5000);
-  
+// If there are any global initializations or service worker registrations required, they would go here.
+// Currently, app.js handles the primary application logic and DOMContentLoaded event.

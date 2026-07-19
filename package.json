@@ -1,7 +1,7 @@
 {
   "name": "dishy",
   "version": "1.0.0",
-  "description": "Recipe book and generator. Collaboration project utilizing Firebase and OpenAI.",
+  "description": "Recipe book and generator. Collaboration project utilizing Firebase and Gemini.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,9 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "express": "^4.21.2",
-    "node-fetch": "^3.3.2",
-    "openai": "^4.77.0"
-  },
-  "devDependencies": {}
+    "node-fetch": "^3.3.2"
+  }
 }
